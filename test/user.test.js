@@ -12,11 +12,13 @@ describe("User /users", () => {
   let server;
   let User;
   let testUsers;
+  let testTokens;
 
   beforeEach(async () => {
     server = await init();
     User = server.methods.model.mongo("User");
     testUsers = server.methods.getAsset("User");
+    testTokens = server.methods.getAsset("Token");
     await server.methods.setUpDatabase();
   });
 
@@ -137,6 +139,7 @@ describe("User /users", () => {
         const res = await server.inject({
           method: "GET",
           url: `/users/${_id}`,
+          headers: { authorization: testTokens[0] },
         });
 
         expect(res.statusCode).to.equal(200);
@@ -152,6 +155,7 @@ describe("User /users", () => {
         const res = await server.inject({
           method: "GET",
           url: `/users/${_id}`,
+          headers: { authorization: testTokens[0] },
         });
 
         expect(res.statusCode).to.equal(404);
@@ -164,6 +168,7 @@ describe("User /users", () => {
         const res = await server.inject({
           method: "GET",
           url: `/users/holi`,
+          headers: { authorization: testTokens[0] },
         });
 
         expect(res.statusCode).to.equal(400);
@@ -182,6 +187,7 @@ describe("User /users", () => {
           method: "PATCH",
           url: `/users/${_id}`,
           payload: { name },
+          headers: { authorization: testTokens[0] },
         });
 
         expect(res.statusCode).to.equal(200);
@@ -200,6 +206,7 @@ describe("User /users", () => {
             method: "PATCH",
             url: `/users/${_id}`,
             payload: testUsers[1],
+            headers: { authorization: testTokens[0] },
           });
 
           expect(res.statusCode).to.equal(200);
@@ -218,6 +225,7 @@ describe("User /users", () => {
           method: "PATCH",
           url: `/users/${_id}`,
           payload: { score },
+          headers: { authorization: testTokens[0] },
         });
 
         expect(res.statusCode).to.equal(400);
@@ -236,6 +244,7 @@ describe("User /users", () => {
         const res = await server.inject({
           method: "DELETE",
           url: `/users/${_id}`,
+          headers: { authorization: testTokens[0] },
         });
 
         expect(res.statusCode).to.equal(204);

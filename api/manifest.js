@@ -27,6 +27,7 @@ let plugins = [
   require("Plugins/boomer"),
   require("Plugins/swagger-responses"),
   require("Plugins/app-wrapper"),
+  require("Plugins/auth-token"),
 ];
 
 if (!is("test")) {

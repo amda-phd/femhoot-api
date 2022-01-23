@@ -1,7 +1,7 @@
 "use strict";
 
 const register = (server) => {
-  // const jwt = require("jsonwebtoken");
+  const { sign } = require("jsonwebtoken");
   // const moment = require("moment");
 
   const { headers } = server.settings.app;
@@ -43,37 +43,11 @@ const register = (server) => {
         email: "tester01@test.com",
         name: "Tester01",
       },
-      // {
-      //   _id: user2Id,
-      //   email: "tester02@test.com",
-      //   name: "Tester02",
-      //   password,
-      //   passwordResetToken: jwt.sign({ _id: user2Id }, password, {
-      //     expiresIn: "1h",
-      //   }),
-      // },
-      // {
-      //   _id: new Types.ObjectId().toString(),
-      //   email: "tester03@test.com",
-      //   name: "Tester03",
-      //   password,
-      //   _type: "guest",
-      //   created: moment().subtract(1, "months"),
-      // },
-      // {
-      //   _id: new Types.ObjectId().toString(),
-      //   email: "tester04@test.com",
-      //   name: "Tester04",
-      //   password,
-      //   created: moment().subtract(1, "week"),
-      // },
-      // {
-      //   _id: new Types.ObjectId().toString(),
-      //   email: "tester05@test.com",
-      //   name: "Tester05",
-      //   password,
-      //   created: moment().add(1, "day"),
-      // },
+    ],
+    Token: [
+      `Bearer ${sign({ _id: user0Id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXP,
+      })}`,
     ],
   };
 
@@ -86,7 +60,8 @@ const register = (server) => {
 
   const setUpMongo = async () => {
     for (const Model in assets) {
-      await server.methods.model.mongo(Model).deleteMany();
+      if (Model !== "Token")
+        await server.methods.model.mongo(Model).deleteMany();
       for (const asset of assets[Model]) {
         if (asset._id) await server.methods.model.mongo(Model).create(asset);
       }

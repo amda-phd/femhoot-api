@@ -17,5 +17,9 @@ module.exports = (server, name) => {
     },
   });
 
+  schema.methods.toCredentials = function () {
+    return { id: this._id };
+  };
+
   return db.model(name, schema);
 };
