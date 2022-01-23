@@ -15,6 +15,14 @@ const post = Joi.object({
   email: email.required(),
 });
 
+const instance = Joi.object({
+  user: Joi.object({
+    name,
+    email,
+    score: Joi.number(),
+  }),
+});
+
 const patch = Joi.object({ name, email });
 
-module.exports = { post, patch, id };
+module.exports = { post, patch, id, instance };

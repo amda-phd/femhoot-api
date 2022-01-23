@@ -12,6 +12,22 @@ const register = (server, options) => {
       options: {
         tags: ["api", "cards"],
         validate: { payload: card.post },
+        description: "Create a new card for all the users to play",
+        plugins: {
+          "hapi-swagger": {
+            responses: {
+              ...server.methods.swaggerResponses(["401", "500"]),
+              201: {
+                description: "Card created",
+                // schema: user.instance,
+              },
+              400: {
+                description: "Invalid creation parameters",
+                schema: server.methods.errorSchema("badRequest"),
+              },
+            },
+          },
+        },
       },
     },
     {
@@ -20,6 +36,18 @@ const register = (server, options) => {
       handler: get10,
       options: {
         tags: ["api", "cards"],
+        description: "Get ten cards to play",
+        plugins: {
+          "hapi-swagger": {
+            responses: {
+              ...server.methods.swaggerResponses(["401", "500"]),
+              200: {
+                description: "Cards found and served",
+                // schema: user.instance,
+              },
+            },
+          },
+        },
       },
     },
     {
@@ -31,6 +59,22 @@ const register = (server, options) => {
         validate: {
           payload: card.rightAnswer,
           params: card.id,
+        },
+        description: "Try and answer one question",
+        plugins: {
+          "hapi-swagger": {
+            responses: {
+              ...server.methods.swaggerResponses(["401", "404", "500"], "Card"),
+              200: {
+                description: "Answer processed",
+                // schema: user.instance,
+              },
+              400: {
+                description: "Invalid answer parameters",
+                schema: server.methods.errorSchema("badRequest"),
+              },
+            },
+          },
         },
       },
     },

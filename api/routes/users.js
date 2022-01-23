@@ -13,6 +13,26 @@ const register = (server, options) => {
         auth: false,
         tags: ["api", "user"],
         validate: { payload: user.post },
+        description: "Create a new user. Without one, you cannot play!",
+        plugins: {
+          "hapi-swagger": {
+            responses: {
+              ...server.methods.swaggerResponses("basic"),
+              201: {
+                description: "User created",
+                schema: user.instance,
+              },
+              400: {
+                description: "Invalid email or name, user not created",
+                schema: server.methods.errorSchema("badRequest"),
+              },
+              409: {
+                description: "Duplicated email, user not created",
+                schema: server.methods.errorSchema("conflict"),
+              },
+            },
+          },
+        },
       },
     },
     {
@@ -22,6 +42,18 @@ const register = (server, options) => {
       options: {
         tags: ["api", "user"],
         validate: { params: user.id },
+        description: "Gets user profile. Anyone can see other user's profiles",
+        plugins: {
+          "hapi-swagger": {
+            responses: {
+              ...server.methods.swaggerResponses(["401", "404", "500"], "User"),
+              200: {
+                description: "User found and served",
+                schema: user.instance,
+              },
+            },
+          },
+        },
       },
     },
     {
@@ -31,6 +63,26 @@ const register = (server, options) => {
       options: {
         tags: ["api", "user"],
         validate: { payload: user.patch, params: user.id },
+        description:
+          "Edit user profile. Beware! You can only edit your profile.",
+        plugins: {
+          "hapi-swagger": {
+            responses: {
+              ...server.methods.swaggerResponses(
+                ["401", "403", "404", "500"],
+                "User"
+              ),
+              200: {
+                description: "User found and modified",
+                schema: user.instance,
+              },
+              400: {
+                description: "Invalid edition parameters",
+                schema: server.methods.errorSchema("badRequest"),
+              },
+            },
+          },
+        },
       },
     },
     {
@@ -40,6 +92,21 @@ const register = (server, options) => {
       options: {
         tags: ["api", "user"],
         validate: { params: user.id },
+        description: "Delete user profile. You can only delete your profile",
+        plugins: {
+          "hapi-swagger": {
+            responses: {
+              ...server.methods.swaggerResponses(
+                ["401", "403", "404", "500"],
+                "User"
+              ),
+              204: {
+                description: "User found removed",
+                schema: user.instance,
+              },
+            },
+          },
+        },
       },
     },
   ]);

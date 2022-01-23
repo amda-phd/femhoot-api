@@ -35,27 +35,17 @@ const register = (server) => {
           "Entity too large. The payload exceeds the server's stablished limit. Try something smaller",
         schema: errorSchema("entityTooLarge"),
       },
-      429: {
-        description:
-          "Too many requests. Either the server is recieving more requests than it can handle or the user has exceeded their request limit. Try again later",
-        schema: errorSchema("tooManyRequests"),
-      },
       500: {
         description:
           "Internal server error: check API logs for more information",
         schema: errorSchema("internal"),
-      },
-      503: {
-        description:
-          "Service unavailable: the server has reached its maximum load capacity and cannot process any new requests. Try later",
-        schema: errorSchema("serverUnavailable"),
       },
     };
 
     if (!codes) return responses;
     if (typeof codes === "string") {
       if (codes === "all") return responses;
-      if (codes === "basic") return pick(responses, ["429", "500", "503"]);
+      if (codes === "basic") return pick(responses, ["500"]);
       if (responses[codes]) return responses[codes];
     }
 

@@ -35,8 +35,6 @@ With this structure, the flux of processes when starting up the server, as defin
 2. Load all the `Joi` validation schemas into `server.app.validators` with the custom plugin `validator-loader`. This needs to be done before loading the database models because some of the validation schemas are used as part of the definition of the `Mongoose` schemas.
 3. Connect to a database though a specific plugin and load the models contained in its `/models` folder for them to be accessed through the `server.methods.model` methods.
    1. `MongoDB` connects via `hapi-mongoose` and saves the `Mongoose` instance in the server object (`server.plugins["hapi-mongoose"].lib`).
-   2. `Redis` connects the number of desired databases using `hapi-redis2` and creates pseudo-models with specific families of methods to intereact with each database.
-   3. `SQL` produces a `sequelize` instance and exposes it in the server. Then adds any model containeed in the `/models` folder to `server.methods.model.sql`.
 4. The `boomer` custom plugin takes care of several error-related functionalities:
    1. Create the toolkit decorator `h.throw`. This decorator simplifies the catching and returning of errors, as we will see in the next steps. It also wrapps the following functionalities.
    2. Logs the complete error in console for further inspection.
@@ -76,7 +74,7 @@ With this structure, the flux of processes when starting up the server, as defin
 
 Once the server is up and running, a request to any of its endpoints will go through the following steps.
 
-1. **Authentication** (unless `auth` is declared as `false` in the route definition). The default authentication strategy is the bearer token strategy which is implemented by the `authenticate` method of the `Auth` app class. This method extracts the token from the request headers and uses the `Auth` model static method `authenticate` to check its vericity and retrieve the user's credentials and **scoping** to determine the user's current permissions.
+1. **Authentication** (unless `auth` is declared as `false` in the route definition). The default authentication strategy is the bearer token strategy which is implemented by the `authenticate` method of the `Auth` app class. This method extracts the token from the request headers and uses the `Auth` model static method `authenticate` to check its vericity.
 2. **Validation**. Each route will validate `headers`, `params`, `query` and/or `payload` against a `Joi` validation schema. If this validation fails, a `failAction` will be thrown before the request reaches the handler. This `failAction` is processed and _boomfied_ via a server option defined at `manifest`.
 3. **Handler**. If the request reaches the route's handler, it will be pipped into one of the server methods created by the `app-wrapper` plugin. The wrapping will take care of the error catching, processing and translation (if needed) and the original method (as defined in the contructor classes contained in `app/`) will handle the product logic, the connections to the required database collections and the use of the models' statics and methods.
 
@@ -101,28 +99,3 @@ Settings ready to connect with a MongoDB database via Mongoose.
   - `MONGO_HOST`, `MONGO_PORT` and `MONGO_NAME`: Provide the parameters to produce the uri and the name of the database (Mongo instance) that will be connected. Suitable for _dev_ and _local_ environments.
   - `MONGO_USER`, `MONGO_PASSWORD` and `MONGO_CLUSTER`: Provide an external cluster and its credentials.
 - All the models contained in the db/models folder are loaded on server startup. Suitable for _prod_ environments.
-- All the requests to the API logs can be saved to a MongoDB collection via `pino-mongodb`. The logs collection doesn't necesarily have to be in the same instance as the models. In fact, the load to the database will be better distributed if a different instance of Mongo is used.
-  - **Beware**: `MONGO_LOG_URI` and `MONGO_LOG_COLLECTION` must be provided as environment variables when invoking `npm run start:log`.
-  - Local version of this function works on very generic local database name and collection. Try it on `npm run start:log:local`.
-
-### Redis
-
-- `ioredis` connects to the Redis databases via `hapi-redis2`. The provided parameters can be:
-  - `REDIS_URL`: Single url containing the connection to the 0 instance of a Redis database.
-  - `REDIS_PORT`and `REDIS_HOST`: If provided instead of `REDIS_URL` they will be used to create the url.
-  - `REDIS_USER`: If needed to construct the connection url.
-  - `REDIS_PASSWORD`: If needed to access the database.
-- The list `databases` contains the names that will be assigned to each Redis (numeric) database using:
-  - Even numbers for local and development.
-  - Odd numbers as testing databases.
-  - 0-1 will be reserved as cache for the `hapi-rate-limitor`plugin.
-- The class `RedisModel` will produce a extendable new family of methods to interact with each new Redis client in a more friendly manner. General methods will be stored in `RedisModel` and specific methods, if needed, will extend that class and will be stored in `/redis/models`.
-
-### SQL
-
-- A `Sequelize` instance is created and exposed in the server. It accepts as connection parameters:
-  - `SQL_DIALECT`: Only SQL dialects accepted by Sequelize will be admited. Remember that `sqlite` dialect will expect a database route.
-  - `SQL_ROUTE`: If the dialect of choice is `sqlite` (very useful for local environments), this parameter needs to be provided. It will contain the absolute route where the SQLite databases are stored.
-  - `SQL_NAME`: Required to access the exact database within the provided location, no matter the dialect.
-  - `SQL_HOST`, `SQL_USER`, `SQL_PASSWORD`: Provide this in case the SQL dialect requires host and credentials to be accessed.
-- The Sequelize models are loaded into the server just like the ones from Mongoose, by scanning whatever model saved in `/sql/models`.
