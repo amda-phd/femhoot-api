@@ -21,7 +21,6 @@ const {
   MAX_EVENT_LOOP_DELAY: maxEventLoopDelay,
 } = process.env;
 
-const url = `http://${host}:${port}`;
 const log = !!LOG || is("prod");
 const watch = WATCH === "true";
 
