@@ -2,15 +2,13 @@
 
 const register = (server) => {
   const { sign } = require("jsonwebtoken");
-  // const moment = require("moment");
 
   const { headers } = server.settings.app;
   const mongoose = server.plugins["hapi-mongoose"].lib;
   const { Types } = mongoose;
 
   const user0Id = new Types.ObjectId().toString();
-  // const user2Id = new Types.ObjectId().toString();
-  // const password = "t251ngMcTest!";
+  const user2Id = new Types.ObjectId().toString();
 
   class Headers {
     constructor(crumb) {
@@ -42,6 +40,11 @@ const register = (server) => {
       {
         email: "tester01@test.com",
         name: "Tester01",
+      },
+      {
+        _id: user2Id,
+        email: "tester02@test.com",
+        name: "Tester02",
       },
     ],
     Token: [

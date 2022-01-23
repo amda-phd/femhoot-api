@@ -178,11 +178,71 @@ describe("User /users", () => {
   });
 
   describe("PATCH with", () => {
-    describe("With name correctly parsed", () => {
-      it("Changes the name and leaves the rest of the fields as they were", async () => {
+    describe("For the logged user", () => {
+      describe("With name correctly parsed", () => {
+        it("Changes the name and leaves the rest of the fields as they were", async () => {
+          const name = "new name!";
+          const { _id } = testUsers[0];
+          const { name: preName, email: preEmail } = await User.findById(_id);
+          const res = await server.inject({
+            method: "PATCH",
+            url: `/users/${_id}`,
+            payload: { name },
+            headers: { authorization: testTokens[0] },
+          });
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.result.user).to.exist();
+          expect(res.result.user.name).to.equal(name);
+
+          const { name: postName, email: postEmail } = await User.findById(_id);
+          expect(preName).not.to.equal(postName);
+          expect(preEmail).to.equal(postEmail);
+        });
+
+        describe("And correct email", () => {
+          it("Changes both fields", async () => {
+            const { _id } = testUsers[0];
+            const res = await server.inject({
+              method: "PATCH",
+              url: `/users/${_id}`,
+              payload: testUsers[1],
+              headers: { authorization: testTokens[0] },
+            });
+
+            expect(res.statusCode).to.equal(200);
+            expect(res.result.user.name).to.equal(testUsers[1].name);
+            expect(res.result.user.email).to.equal(testUsers[1].email);
+          });
+        });
+      });
+
+      describe("Forbidden score field", () => {
+        it("Throws an error and doesn't change the score", async () => {
+          const { _id } = testUsers[0];
+          const score = 200;
+          const { score: preScore } = await User.findById(_id);
+          const res = await server.inject({
+            method: "PATCH",
+            url: `/users/${_id}`,
+            payload: { score },
+            headers: { authorization: testTokens[0] },
+          });
+
+          expect(res.statusCode).to.equal(400);
+
+          const { score: postScore } = await User.findById(_id);
+          expect(postScore).to.equal(preScore);
+          expect(postScore).not.to.equal(score);
+        });
+      });
+    });
+
+    describe("For a user different from the logged one", () => {
+      it("Throws a 403 error and doesn't modify the account", async () => {
         const name = "new name!";
-        const { _id } = testUsers[0];
-        const { name: preName, email: preEmail } = await User.findById(_id);
+        const { _id } = testUsers[2];
+        const { name: preName } = await User.findById(_id);
         const res = await server.inject({
           method: "PATCH",
           url: `/users/${_id}`,
@@ -190,49 +250,11 @@ describe("User /users", () => {
           headers: { authorization: testTokens[0] },
         });
 
-        expect(res.statusCode).to.equal(200);
-        expect(res.result.user).to.exist();
-        expect(res.result.user.name).to.equal(name);
+        expect(res.statusCode).to.equal(403);
+        expect(res.result.user).not.to.exist();
 
-        const { name: postName, email: postEmail } = await User.findById(_id);
-        expect(preName).not.to.equal(postName);
-        expect(preEmail).to.equal(postEmail);
-      });
-
-      describe("And correct email", () => {
-        it("Changes both fields", async () => {
-          const { _id } = testUsers[0];
-          const res = await server.inject({
-            method: "PATCH",
-            url: `/users/${_id}`,
-            payload: testUsers[1],
-            headers: { authorization: testTokens[0] },
-          });
-
-          expect(res.statusCode).to.equal(200);
-          expect(res.result.user.name).to.equal(testUsers[1].name);
-          expect(res.result.user.email).to.equal(testUsers[1].email);
-        });
-      });
-    });
-
-    describe("Forbidden score field", () => {
-      it("Throws an error and doesn't change the score", async () => {
-        const { _id } = testUsers[0];
-        const score = 200;
-        const { score: preScore } = await User.findById(_id);
-        const res = await server.inject({
-          method: "PATCH",
-          url: `/users/${_id}`,
-          payload: { score },
-          headers: { authorization: testTokens[0] },
-        });
-
-        expect(res.statusCode).to.equal(400);
-
-        const { score: postScore } = await User.findById(_id);
-        expect(postScore).to.equal(preScore);
-        expect(postScore).not.to.equal(score);
+        const { name: postName } = await User.findById(_id);
+        expect(preName).to.equal(postName);
       });
     });
   });
@@ -252,6 +274,22 @@ describe("User /users", () => {
 
         const user = await User.findById(_id);
         expect(user).to.be.null();
+      });
+    });
+
+    describe("User different from the logged one", () => {
+      it("Throws a 403 error and doesn't delete the account", async () => {
+        const { _id } = testUsers[2];
+        const res = await server.inject({
+          method: "DELETE",
+          url: `/users/${_id}`,
+          headers: { authorization: testTokens[0] },
+        });
+
+        expect(res.statusCode).to.equal(403);
+
+        const user = await User.findById(_id);
+        expect(user).to.exist();
       });
     });
   });
