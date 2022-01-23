@@ -6,5 +6,5 @@
   },
   "labExplorer.debuggerConfig": "Attach by Process ID",
   "labExplorer.breakOnFirstLine": true,
-  "typescript.validate.enable": false
+  "typescript.validate.enable": true
 }

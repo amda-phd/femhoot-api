@@ -35,20 +35,6 @@ let plugins = [
   require("Plugins/app-wrapper"),
 
   // SECURITY PLUGINS
-  {
-    plugin: require("@hapi/crumb"),
-    options: {
-      restful: true,
-      cookieOptions: {
-        isSecure: is("prod"),
-      },
-      skip: (request, h) =>
-        is("local") ||
-        request.info.referrer === `${url}${app.documentation.path}`,
-      logUnauthorized: true,
-      headerName: app.headers.csrf || undefined,
-    },
-  },
   require("@hapi/scooter"),
   {
     plugin: require("blankie"),

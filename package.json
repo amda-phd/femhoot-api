@@ -34,7 +34,6 @@
     "@hapi/accept": "^5.0.2",
     "@hapi/basic": "^6.0.0",
     "@hapi/boom": "^9.1.4",
-    "@hapi/crumb": "^8.0.1",
     "@hapi/eslint-plugin": "^5.1.0",
     "@hapi/glue": "^8.0.0",
     "@hapi/hapi": "^20.2.1",
@@ -49,7 +48,6 @@
     "hapi-mongoose": "^2.0.0",
     "hapi-pino": "^9.1.0",
     "hapi-rate-limitor": "^3.1.1",
-    "hapi-redis2": "^3.0.1",
     "hapi-swagger": "^14.2.4",
     "joi": "^17.5.0",
     "joi-objectid": "^4.0.2",
@@ -60,9 +58,7 @@
     "moment": "^2.29.1",
     "mongoose": "^6.1.6",
     "pino-mongodb": "^3.1.1",
-    "pino-pretty": "^7.3.0",
-    "sequelize": "^6.13.0",
-    "sqlite3": "npm:@louislam/sqlite3@^6.0.1"
+    "pino-pretty": "^7.3.0"
   },
   "devDependencies": {
     "@hapi/code": "^8.0.5",
