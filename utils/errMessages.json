@@ -1,0 +1,110 @@
+{
+  "BOOM": {
+    "400": {
+      "en": "Bad request",
+      "es": "Petición incorrecta"
+    },
+    "401": {
+      "en": "Invalid credentials",
+      "es": "Las credenciales no son válidas"
+    },
+    "413": {
+      "en": "Request Entity Too Large",
+      "es": "La petición es demasiado grande"
+    },
+    "429": {
+      "en": "You have exceeded the request limit",
+      "es": "Se ha alcanzado el número máximo de peticiones"
+    },
+    "TOKEN_EXPIRED": {
+      "en": "Token expired",
+      "es": "El token ha expirado"
+    },
+    "TOKEN_INVALID": {
+      "en": "Token invalid",
+      "es": "El token no es válido"
+    },
+    "TOKEN_NOT_FOUND": {
+      "en": "Token not found",
+      "es": "El token no se ha encontrado"
+    },
+    "USER_NOT_FOUND": {
+      "en": "User not found",
+      "es": "Cuenta no encontrada"
+    },
+    "WRONG_PASSWORD": {
+      "en": "Wrong password",
+      "es": "Contraseña incorrecta"
+    },
+    "NO_PERMISSION": {
+      "en": "The user lacks required permission",
+      "es": "No se cuenta con los permisos necesarios"
+    },
+    "SORTING_NOT_ACCEPTABLE": {
+      "en": "One or some of your sorting parameters is not valid",
+      "es": "Uno o varios de los parámetros de organización no es válido"
+    },
+    "TIME_UNIT_NOT_ACCEPTABLE": {
+      "en": "The time limit unit isn't valid",
+      "es": "Las unidades del limitador de tiempo no son válidas"
+    }
+  },
+  "MONGOOSE": {
+    "duplicated": {
+      "en": "duplicated",
+      "es": "duplicado"
+    }
+  },
+  "JOI": {
+    "email": {
+      "string.email": {
+        "en": "Only valid emails are acceptable",
+        "es": "Solo aceptaremos correos válidos"
+      }
+    },
+    "password": {
+      "string.pattern.invert.base": {
+        "en": "Remember that passwords MUST be at least 8 characters long, contain a lowercase letter, a uppercase letter, a number and a special symbol. Common passwords or bits of passwords are not safe and we don't allow them.",
+        "es": "Recuerda que la contraseña debe contener tener menos 8 caracteres, una minúscula, una mayúscula, un número y un símbolo especial. No permitimos contraseñas populares o demasiado fáciles de adivinar."
+      }
+    },
+    "newPassword": {
+      "string.pattern.invert.base": {
+        "en": "Remember that passwords MUST be at least 8 characters long, contain a lowercase letter, a uppercase letter, a number and a special symbol. Common passwords or bits of passwords are not safe and we don't allow them.",
+        "es": "Recuerda que la contraseña debe contener tener menos 8 caracteres, una minúscula, una mayúscula, un número y un símbolo especial. No permitimos contraseñas populares o demasiado fáciles de adivinar."
+      }
+    },
+    "repeatNewPassword": {
+      "any.only": {
+        "en": "Passwords don't match",
+        "es": "Las contraseñas no coinciden"
+      }
+    },
+    "createdTo": {
+      "date.min": {
+        "en": "The creation limits are disordered",
+        "es": "Los límites de creación están desordenados"
+      }
+    },
+    "updatedTo": {
+      "date.min": {
+        "en": "The update limits are disordered",
+        "es": "Los límites de actualización están desordenados"
+      }
+    }
+  },
+  "JWT": {
+    "TokenExpiredError": {
+      "en": "Token error",
+      "es": "El token es erróneo"
+    },
+    "JsonWebTokenError": {
+      "en": "Token invalid",
+      "es": "El token no es válido"
+    },
+    "NotBeforeError": {
+      "en": "Token not jet active",
+      "es": "El token aún no está activo"
+    }
+  }
+}

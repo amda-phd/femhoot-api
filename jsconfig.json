@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "Api/*": ["./api/*"],
+      "App/*": ["./app/*"],
+      "Mongo/*": ["./db/mongo/models/*"],
+      "Plugins/*": ["./api/plugins/*"],
+      "Redis/*": ["./db/redis/models/*"],
+      "Routes/*": ["./api/routes/*"],
+      "SQL/*": ["./db/sql/models/*"],
+      "Utils/*": ["./utils/*"],
+      "Validators/*": ["./api/validators/*"],
+      "@appFactory": ["./utils/appFactory"],
+      "@env": ["./api/env"],
+      "@errMessages": ["./utils/errMessages.json"],
+      "@helpers": ["./utils/helpers"],
+      "@manifest": ["./api/manifest"],
+      "@mongo": ["./db/mongo/utils"],
+      "@pack": ["./package.json"],
+      "@redis": ["./db/redis/utils"],
+      "@server": ["./api/server.js"],
+      "@settings": ["./api/settings"],
+      "@sql": ["./db/sql/utils"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

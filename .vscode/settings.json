@@ -1,0 +1,10 @@
+{
+  "todohighlight.isEnable": true,
+  "labExplorer.logpanel": true,
+  "labExplorer.env": {
+    "NODE_ENV": "test"
+  },
+  "labExplorer.debuggerConfig": "Attach by Process ID",
+  "labExplorer.breakOnFirstLine": true,
+  "typescript.validate.enable": false
+}

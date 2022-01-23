@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "ryanluker.vscode-coverage-gutters",
+    "wayou.vscode-todo-highlight",
+    "pflannery.vscode-versionlens",
+    "ijuani.vscode-lab-test-adapter",
+    "deerawan.vscode-hapijs-snippets",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "hbenl.vscode-test-explorer",
+    "mikestead.dotenv"
+  ]
+}
