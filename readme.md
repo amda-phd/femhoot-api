@@ -6,7 +6,7 @@ This API has been created using [amda's](https://github.com/amda-phd) basic boil
 - Queryable `/health` route.
 - Basic validation via `Joi`.
 - Unit testing suite via `Lab`.
-- Routes documentation via `hapi-swagger`. Access to the documentation will require basic auth if `SWAGGER_USER` and `SWAGGER_PASSWORD` are provided as environment variables.
+- Routes documentation via `hapi-swagger` at the endpoint `/documentation`. Access to the documentation will require basic auth if `SWAGGER_USER` and `SWAGGER_PASSWORD` are provided as environment variables.
 - Styling and linting according to `eslint:recommended` and `@hapi/recommended`.
 - Git hooks via `husky` including:
   - `pre-commit` lint, prettier and create TODOs report.
