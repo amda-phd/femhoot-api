@@ -130,6 +130,48 @@ describe("User /users", () => {
     });
   });
 
+  describe("GET with", () => {
+    describe("With correct userId", () => {
+      it("Fetches the user", async () => {
+        const { _id } = testUsers[0];
+        const res = await server.inject({
+          method: "GET",
+          url: `/users/${_id}`,
+        });
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.result.user._id.toString()).to.equal(_id);
+      });
+    });
+
+    describe("With non existant userId", () => {
+      it("Throws a 404 error", async () => {
+        const _id = new server.plugins[
+          "hapi-mongoose"
+        ].lib.Types.ObjectId().toString();
+        const res = await server.inject({
+          method: "GET",
+          url: `/users/${_id}`,
+        });
+
+        expect(res.statusCode).to.equal(404);
+        expect(res.result.user).not.to.exist();
+      });
+    });
+
+    describe("Badly parsed userId", () => {
+      it("Throws a 400 error", async () => {
+        const res = await server.inject({
+          method: "GET",
+          url: `/users/holi`,
+        });
+
+        expect(res.statusCode).to.equal(400);
+        expect(res.result.user).not.to.exist();
+      });
+    });
+  });
+
   describe("PATCH with", () => {
     describe("With name correctly parsed", () => {
       it("Changes the name and leaves the rest of the fields as they were", async () => {
@@ -183,6 +225,24 @@ describe("User /users", () => {
         const { score: postScore } = await User.findById(_id);
         expect(postScore).to.equal(preScore);
         expect(postScore).not.to.equal(score);
+      });
+    });
+  });
+
+  describe("DELETE with", () => {
+    describe("Existing user", () => {
+      it("Removes the user's account from the database", async () => {
+        const { _id } = testUsers[0];
+        const res = await server.inject({
+          method: "DELETE",
+          url: `/users/${_id}`,
+        });
+
+        expect(res.statusCode).to.equal(204);
+        expect(res.result).not.to.exist();
+
+        const user = await User.findById(_id);
+        expect(user).to.be.null();
       });
     });
   });
