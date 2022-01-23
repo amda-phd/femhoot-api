@@ -130,5 +130,60 @@ describe("User /users", () => {
     });
   });
 
-  describe("PATCH with", () => {});
+  describe("PATCH with", () => {
+    describe("With name correctly parsed", () => {
+      it("Changes the name and leaves the rest of the fields as they were", async () => {
+        const name = "new name!";
+        const { _id } = testUsers[0];
+        const { name: preName, email: preEmail } = await User.findById(_id);
+        const res = await server.inject({
+          method: "PATCH",
+          url: `/users/${_id}`,
+          payload: { name },
+        });
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.result.user).to.exist();
+        expect(res.result.user.name).to.equal(name);
+
+        const { name: postName, email: postEmail } = await User.findById(_id);
+        expect(preName).not.to.equal(postName);
+        expect(preEmail).to.equal(postEmail);
+      });
+
+      describe("And correct email", () => {
+        it("Changes both fields", async () => {
+          const { _id } = testUsers[0];
+          const res = await server.inject({
+            method: "PATCH",
+            url: `/users/${_id}`,
+            payload: testUsers[1],
+          });
+
+          expect(res.statusCode).to.equal(200);
+          expect(res.result.user.name).to.equal(testUsers[1].name);
+          expect(res.result.user.email).to.equal(testUsers[1].email);
+        });
+      });
+    });
+
+    describe("Forbidden score field", () => {
+      it("Throws an error and doesn't change the score", async () => {
+        const { _id } = testUsers[0];
+        const score = 200;
+        const { score: preScore } = await User.findById(_id);
+        const res = await server.inject({
+          method: "PATCH",
+          url: `/users/${_id}`,
+          payload: { score },
+        });
+
+        expect(res.statusCode).to.equal(400);
+
+        const { score: postScore } = await User.findById(_id);
+        expect(postScore).to.equal(preScore);
+        expect(postScore).not.to.equal(score);
+      });
+    });
+  });
 });

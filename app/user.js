@@ -10,7 +10,7 @@ module.exports = class App extends require("@appFactory") {
     const user = await this.mongo("User").findByIdAndUpdate(
       params.id,
       payload,
-      { new: true, runValidators: true }
+      { new: true, runValidators: true, useFindAndModify: true }
     );
     return { response: { user }, code: 200 };
   }
