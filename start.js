@@ -11,7 +11,5 @@ start()
     console.error(error);
   });
 
-// TODO: A route that allows to check if the choosen answer by the player is correct.
-// TODO: A route that returns a set of 10 questions (randomly selected from a JSON, these can be fake questions) with 4 possible answers.
-// TODO: Question model
-// TODO: Question CRUD
+// TODO: Random array of cards.
+// TODO: Question CRUD: edit and delete only for creator

@@ -9,6 +9,7 @@ const register = (server) => {
 
   const user0Id = new Types.ObjectId().toString();
   const user2Id = new Types.ObjectId().toString();
+  const card0Id = new Types.ObjectId().toString();
 
   class Headers {
     constructor(crumb) {
@@ -51,6 +52,33 @@ const register = (server) => {
       `Bearer ${sign({ _id: user0Id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXP,
       })}`,
+      `Bearer ${sign({ _id: user2Id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXP,
+      })}`,
+    ],
+    Card: [
+      {
+        _id: card0Id,
+        question: "how old are you?",
+        possibleAnswers: [
+          "asrfwedfasf",
+          "arfwefewvew",
+          "aweqfgressaa",
+          "wqgrwgsadwfwe",
+        ],
+        rightAnswer: 2,
+        creator: user2Id,
+      },
+      {
+        question: "where are you from?",
+        possibleAnswers: [
+          "asrfwedfasf",
+          "arfwefewvew",
+          "aweqfgressaa",
+          "wqgrwgsadwfwe",
+        ],
+        rightAnswer: 4,
+      },
     ],
   };
 

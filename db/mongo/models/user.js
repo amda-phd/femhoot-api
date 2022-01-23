@@ -21,5 +21,10 @@ module.exports = (server, name) => {
     return { id: this._id };
   };
 
+  schema.methods.increaseScore = async function () {
+    const { score } = this;
+    return await this.update({ score: score + 10 });
+  };
+
   return db.model(name, schema);
 };
