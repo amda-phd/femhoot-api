@@ -14,11 +14,6 @@ const {
   SWAGGER_USER,
   SWAGGER_PASSWORD,
   WATCH,
-  MAX_BYTES: maxBytes,
-  SAMPLE_INTERVAL: sampleInterval = 0,
-  MAX_HEAP_USED_BYTES: maxHeapUsedBytes,
-  MAX_RSS_BYTES: maxRssBytes,
-  MAX_EVENT_LOOP_DELAY: maxEventLoopDelay,
 } = process.env;
 
 const log = !!LOG || is("prod");
@@ -32,27 +27,6 @@ let plugins = [
   require("Plugins/boomer"),
   require("Plugins/swagger-responses"),
   require("Plugins/app-wrapper"),
-
-  // SECURITY PLUGINS
-  require("@hapi/scooter"),
-  {
-    plugin: require("blankie"),
-    options: {
-      defaultSrc: "self",
-      scriptSrc: "self",
-      frameAncestors: "none",
-      imgSrc: "self",
-      styleSrc: "none",
-    },
-  },
-  {
-    plugin: require("disinfect"),
-    options: {
-      disinfectQuery: true,
-      disinfectParams: true,
-      disinfectPayload: true,
-    },
-  },
 ];
 
 if (!is("test")) {
@@ -146,31 +120,6 @@ module.exports = {
         failAction: (request, h, error) =>
           Boom.badRequest(TranslateError(request, error)),
       },
-      // SECURITY SETTINGS
-      // Set a default payload maximum size (can be changed on specific routes) and include error translation for the resulting error.
-      payload: {
-        maxBytes,
-        failAction: (request, h, error) =>
-          Boom.entityTooLarge(TranslateError(request, error)),
-      },
-      // Tune this as the app develops to accomodate its prod and dev reality
-      cors: {
-        origin: is(["prod", "dev"]) ? ["ignore"] : ["*"],
-        credentials: true,
-        additionalHeaders: Object.values(app.headers),
-      },
-      // Call Hoek.jsonEscape() automatically
-      json: {
-        escape: true,
-      },
-      security: true,
-    },
-    // Define load limits in order to reject requests if the server is working at its maximum capacity. Throws 503 and logs events with 'load' tag.
-    load: {
-      sampleInterval,
-      maxHeapUsedBytes,
-      maxRssBytes,
-      maxEventLoopDelay,
     },
   },
   register: { plugins },
