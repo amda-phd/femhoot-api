@@ -2,12 +2,14 @@
 
 const Joi = require("joi");
 
-const name = Joi.string().min(3).max(50).required();
-const email = Joi.string().email().required();
+const name = Joi.string().min(3).max(50);
+const email = Joi.string().email();
 
 const post = Joi.object({
-  name,
-  email,
+  name: name.required(),
+  email: email.required(),
 });
 
-module.exports = { post };
+const patch = Joi.object({ name, email });
+
+module.exports = { post, patch };

@@ -2,7 +2,7 @@
 
 const register = (server, options) => {
   const { user } = server.plugins.validators;
-  const { post } = server.methods.User;
+  const { post, patch } = server.methods.User;
 
   server.route([
     {
@@ -13,6 +13,15 @@ const register = (server, options) => {
         auth: false,
         tags: ["api", "user"],
         validate: { payload: user.post },
+      },
+    },
+    {
+      method: "PATCH",
+      path: "/{id}",
+      handler: patch,
+      options: {
+        tags: ["api", "user"],
+        validate: { payload: user.patch },
       },
     },
   ]);

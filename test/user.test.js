@@ -129,4 +129,6 @@ describe("User /users", () => {
       });
     });
   });
+
+  describe("PATCH with", () => {});
 });
