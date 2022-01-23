@@ -1,16 +1,16 @@
 "use strict";
 
 const register = (server) => {
-  const jwt = require("jsonwebtoken");
-  const moment = require("moment");
+  // const jwt = require("jsonwebtoken");
+  // const moment = require("moment");
 
   const { headers } = server.settings.app;
   const mongoose = server.plugins["hapi-mongoose"].lib;
   const { Types } = mongoose;
 
   const user0Id = new Types.ObjectId().toString();
-  const user2Id = new Types.ObjectId().toString();
-  const password = "t251ngMcTest!";
+  // const user2Id = new Types.ObjectId().toString();
+  // const password = "t251ngMcTest!";
 
   class Headers {
     constructor(crumb) {
@@ -38,71 +38,42 @@ const register = (server) => {
         _id: user0Id,
         email: "tester00@test.com",
         name: "Tester00",
-        password,
-        _type: "admin",
       },
       {
         email: "tester01@test.com",
         name: "Tester01",
-        password,
       },
-      {
-        _id: user2Id,
-        email: "tester02@test.com",
-        name: "Tester02",
-        password,
-        passwordResetToken: jwt.sign({ _id: user2Id }, password, {
-          expiresIn: "1h",
-        }),
-      },
-      {
-        _id: new Types.ObjectId().toString(),
-        email: "tester03@test.com",
-        name: "Tester03",
-        password,
-        _type: "guest",
-        created: moment().subtract(1, "months"),
-      },
-      {
-        _id: new Types.ObjectId().toString(),
-        email: "tester04@test.com",
-        name: "Tester04",
-        password,
-        created: moment().subtract(1, "week"),
-      },
-      {
-        _id: new Types.ObjectId().toString(),
-        email: "tester05@test.com",
-        name: "Tester05",
-        password,
-        created: moment().add(1, "day"),
-      },
-    ],
-    Auth: [
-      {
-        _id: new Types.ObjectId(),
-        user: user0Id,
-        token: jwt.sign({ _id: user0Id }, process.env.JWT_SECRET, {
-          expiresIn: process.env.JWT_EXP,
-        }),
-        scope: "admin",
-      },
-      {
-        _id: new Types.ObjectId(),
-        user: user0Id,
-        token: jwt.sign({ _id: user0Id }, process.env.JWT_SECRET, {
-          expiresIn: "1s",
-        }),
-        scope: "admin",
-      },
-      {
-        _id: new Types.ObjectId(),
-        user: user0Id,
-        token: jwt.sign({ _id: user0Id }, process.env.JWT_SECRET, {
-          expiresIn: "1h",
-        }),
-        scope: "user",
-      },
+      // {
+      //   _id: user2Id,
+      //   email: "tester02@test.com",
+      //   name: "Tester02",
+      //   password,
+      //   passwordResetToken: jwt.sign({ _id: user2Id }, password, {
+      //     expiresIn: "1h",
+      //   }),
+      // },
+      // {
+      //   _id: new Types.ObjectId().toString(),
+      //   email: "tester03@test.com",
+      //   name: "Tester03",
+      //   password,
+      //   _type: "guest",
+      //   created: moment().subtract(1, "months"),
+      // },
+      // {
+      //   _id: new Types.ObjectId().toString(),
+      //   email: "tester04@test.com",
+      //   name: "Tester04",
+      //   password,
+      //   created: moment().subtract(1, "week"),
+      // },
+      // {
+      //   _id: new Types.ObjectId().toString(),
+      //   email: "tester05@test.com",
+      //   name: "Tester05",
+      //   password,
+      //   created: moment().add(1, "day"),
+      // },
     ],
   };
 
