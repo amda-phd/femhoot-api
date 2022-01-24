@@ -1,3 +1,7 @@
+# femhoot-api
+
+A production deployment of this API can be found at [Heroku](https://femhoot-api.herokuapp.com) and all the endpoint's documentation can be tested [here](https://femhoot-api.herokuapp.com/documentation). Feel free to explore the endpoints using the Postman Collection included in this repo's root.
+
 # hapi REST API boilerplate
 
 This API has been created using [amda's](https://github.com/amda-phd) basic boilerplate, which includes:
