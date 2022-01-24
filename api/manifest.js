@@ -8,7 +8,8 @@ const { is } = require("@helpers");
 const { app } = require("@settings");
 
 const {
-  HAPI_PORT: port,
+  HAPI_PORT,
+  PORT,
   HAPI_HOST: host,
   LOG,
   SWAGGER_USER,
@@ -16,6 +17,7 @@ const {
   WATCH,
 } = process.env;
 
+const port = PORT || HAPI_PORT;
 const log = !!LOG || is("prod");
 const watch = WATCH === "true";
 
