@@ -18,7 +18,7 @@ const {
 } = process.env;
 
 const port = PORT || HAPI_PORT;
-const log = !!LOG || is("prod");
+const log = !!LOG;
 const watch = WATCH === "true";
 
 // Plugins that will be used no matter the environment
@@ -72,7 +72,7 @@ if (!is("test")) {
           description: Pack.description,
           version: Pack.version,
         },
-        auth: SWAGGER_USER && SWAGGER_PASSWORD ? "swagger" : undefined,
+        auth: SWAGGER_USER && SWAGGER_PASSWORD ? "swagger" : false,
         securityDefinitions: {
           jwt: {
             type: "apiKey",

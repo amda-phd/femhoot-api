@@ -1,7 +1,7 @@
 {
-  "name": "hapi-boilerplate",
+  "name": "femhoot-api",
   "version": "1.0.0",
-  "description": "hapi cooking",
+  "description": "play feminist!",
   "main": "start.js",
   "scripts": {
     "lint": "eslint . --ext .js",
