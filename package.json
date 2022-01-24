@@ -11,6 +11,7 @@
     "report:test": "cross-env REPORT=true lab",
     "report:todo": "rm -rf todo.md && leasot --exit-nicely --reporter markdown \"./**/*.js\" --ignore \"node_modules/**/*.js\" > todo.md && code -r todo.md",
     "start": "node start.js",
+    "start:dev": "cross-env NODE_ENV=dev node start.js",
     "start:local": "cross-env NODE_ENV=local node start.js",
     "test": "lab",
     "test:log": "cross-env LOG=true lab",

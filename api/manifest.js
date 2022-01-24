@@ -58,37 +58,35 @@ if (!is("test")) {
     require("@hapi/vision"),
   ].concat(plugins);
 
-  // Prevent documentation to be created and loaded in production and testing enviornments. Also, in the environments where documentation is accesible, simple authentication will be required in order to view it.
-  if (!is("prod")) {
-    plugins = plugins.concat([
-      require("@hapi/basic"),
-      require("Plugins/swagger-auth"),
-      {
-        plugin: require("hapi-swagger"),
-        options: {
-          info: {
-            title: `${Pack.name} Documentation`,
-            description: Pack.description,
-            version: Pack.version,
-          },
-          auth: SWAGGER_USER && SWAGGER_PASSWORD ? "swagger" : undefined,
-          securityDefinitions: {
-            jwt: {
-              type: "apiKey",
-              name: app.headers.auth,
-              in: "header",
-            },
-          },
-          security: [{ jwt: [] }],
-          pathPrefixSize: 2,
-          documentationPath: app.documentation.path || undefined,
-          documentationRoutePlugins: {
-            blankie: false,
+  // Prevent documentation to be created and loaded in testing enviornments. Also, in the environments where documentation is accesible, simple authentication will be required in order to view it.
+  plugins = plugins.concat([
+    require("@hapi/basic"),
+    require("Plugins/swagger-auth"),
+    {
+      plugin: require("hapi-swagger"),
+      options: {
+        info: {
+          title: `${Pack.name} Documentation`,
+          description: Pack.description,
+          version: Pack.version,
+        },
+        auth: SWAGGER_USER && SWAGGER_PASSWORD ? "swagger" : undefined,
+        securityDefinitions: {
+          jwt: {
+            type: "apiKey",
+            name: app.headers.auth,
+            in: "header",
           },
         },
+        security: [{ jwt: [] }],
+        pathPrefixSize: 2,
+        documentationPath: app.documentation.path || undefined,
+        documentationRoutePlugins: {
+          blankie: false,
+        },
       },
-    ]);
-  }
+    },
+  ]);
 } else {
   // Database fixtures will only be loaded and used during tests, so it doesn't make sense to load this kind of information for any other environment.
   plugins.push(require("Plugins/db-fixtures"));
